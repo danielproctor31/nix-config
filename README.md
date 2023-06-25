@@ -28,6 +28,10 @@ Run:
 sudo nixos-rebuild switch --flake ./#<name>
 ```
 
+### Darwin
+
+TODO
+
 ### Home Manager
 ```
 nix-shell -p home-manager
@@ -39,3 +43,10 @@ home-manager switch --flake ./#<name>
 ```
 nix flake update
 ```
+
+Links:
+ - https://nixos.wiki/wiki/Overview_of_the_NixOS_Linux_distribution
+ - https://nixos.wiki/wiki/Flakes
+ - https://github.com/LnL7/nix-darwin
+ - https://nixos.wiki/wiki/Full_Disk_Encryption
+ - https://nix-community.github.io/home-manager/index.html

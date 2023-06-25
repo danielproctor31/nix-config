@@ -6,9 +6,16 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # TODO darwin
+    # nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-23.05-darwin";
+    darwin = {
+      url = "github:lnl7/nix-darwin/master";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   
-  outputs = { self, nixpkgs, home-manager, ... }:
+  outputs = { self, nixpkgs, home-manager, darwin, ... }:
       let
           hm = home-manager.lib;
       in {
@@ -16,6 +23,11 @@
       nixosConfigurations."blade" = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [ ./hosts/blade/configuration.nix ];
+      };
+      # MacOS configuration
+      darwinConfigurations."mac" = darwin.lib.darwinSystem {
+        system = "aarch64-darwin";
+        modules = [ ./hosts/mac/configuration.nix ];
       };
 
       # home manager configs
