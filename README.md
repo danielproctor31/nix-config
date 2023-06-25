@@ -7,6 +7,12 @@
 
 ## Setup
 
+Enable Flakes:
+```
+mkdir -p ~/.config/nix
+echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
+```
+
 Install Home Manager:
 ```
 sudo nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
@@ -16,14 +22,6 @@ sudo nix-channel --update
 ## Usage
 
 ### NixOS
-
-Enable Flakes:
-```
-mkdir -p ~/.config/nix
-echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
-```
-
-Run:
 ```
 sudo nixos-rebuild switch --flake ./#<name>
 ```
@@ -39,7 +37,6 @@ home-manager switch --flake ./#<name>
 ```
 
 ## Update Packages
-
 ```
 nix flake update
 ```
