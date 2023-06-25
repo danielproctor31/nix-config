@@ -16,6 +16,15 @@ in
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  # Setup keyfile
+  boot.initrd.secrets = {
+    "/crypto_keyfile.bin" = null;
+  };
+
+  # Enable swap on luks
+  boot.initrd.luks.devices."luks-706ae0db-c6c4-45c5-86b1-886876219691".device = "/dev/disk/by-uuid/706ae0db-c6c4-45c5-86b1-886876219691";
+  boot.initrd.luks.devices."luks-706ae0db-c6c4-45c5-86b1-886876219691".keyFile = "/crypto_keyfile.bin";
+
   # Enable networking
   networking.networkmanager.enable = true;
   networking.hostName = "blade"; # Define your hostname.
@@ -158,5 +167,5 @@ in
     };
   };
 
-  system.stateVersion = "unstable";
+  system.stateVersion = "23.05";
 }
