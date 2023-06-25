@@ -118,7 +118,8 @@ in
   ];
 
   programs.zsh.enable = true;
-
+  virtualisation.docker.enable = true;
+  
   # Enable flakes
   nix = {
     extraOptions = ''
