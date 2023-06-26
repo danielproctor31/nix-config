@@ -9,6 +9,7 @@
     pkgs.awscli2
     pkgs.vim
     pkgs.nano
+    pkgs.direnv
   ];
 
   imports = [

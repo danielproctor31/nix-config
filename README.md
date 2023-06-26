@@ -2,7 +2,6 @@
 
 ## TODO
 - [ ] Darwin - Home-Manager as a module
-- [ ] Direnv - https://github.com/nix-community/nix-direnv
 
 ## Setup
 
@@ -45,6 +44,13 @@ sudo nixos-rebuild switch --flake ./#<host>
 ### Home Manager
 ```
 nix run home-manager/master -- switch --flake ./#<host>
+```
+
+### direnv
+
+Setup a `shell.nix` in your projects repo. Then run the following:
+```
+echo "use nix" > .envrc && direnv allow .
 ```
 
 ## Update Packages
