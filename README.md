@@ -44,8 +44,7 @@ sudo nixos-rebuild switch --flake ./#<host>
 
 ### Home Manager
 ```
-nix-shell -p home-manager
-home-manager switch --flake ./#<host>
+nix run home-manager/master -- switch --flake ./#<host>
 ```
 
 ## Update Packages
