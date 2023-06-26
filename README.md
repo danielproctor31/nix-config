@@ -1,8 +1,7 @@
 # nix-config
 
 ## TODO
-
-- [ ] Nix Darwin - https://github.com/LnL7/nix-darwin
+- [ ] Darwin - Home-Manager as a module
 - [ ] Direnv - https://github.com/nix-community/nix-direnv
 
 ## Setup
@@ -19,21 +18,34 @@ sudo nix-channel --add https://github.com/nix-community/home-manager/archive/mas
 sudo nix-channel --update
 ```
 
+### Darwin
+
+Install XCode command line tools and [Brew](https://brew.sh/):
+```
+xcode-select --install
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+Build Nix Darwin with flakes:
+```
+nix build .#darwinConfigurations.<host>.system --extra-experimental-features "nix-command flakes"
+```
+
 ## Usage
 
 ### NixOS
 ```
-sudo nixos-rebuild switch --flake ./#<name>
+sudo nixos-rebuild switch --flake ./#<host>
 ```
 
 ### Darwin
-
-TODO
+```
+./result/sw/bin/darwin-rebuild switch --flake ./#<host>
+```
 
 ### Home Manager
 ```
 nix-shell -p home-manager
-home-manager switch --flake ./#<name>
+home-manager switch --flake ./#<host>
 ```
 
 ## Update Packages

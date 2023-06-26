@@ -36,10 +36,13 @@
       # MacOS configuration
       darwinConfigurations."mac" = darwin.lib.darwinSystem {
         system = "aarch64-darwin";
-        modules = [ ./hosts/mac/configuration.nix ];
+        pkgs = nixpkgs.legacyPackages.aarch64-darwin;
+        modules = [ 
+          ./hosts/mac/configuration.nix
+        ];
       };
 
-      # home manager configs
+      # home manager config (For non NixOS use)
       homeConfigurations."linux" = hm.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.x86_64-linux;
         modules = [ ./home/linux.nix ];
