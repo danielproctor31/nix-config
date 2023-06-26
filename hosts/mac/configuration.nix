@@ -31,6 +31,7 @@
     "visual-studio-code"
     "plexamp"
     "darktable"
+    "cryptomator"
   ];
 };
   # Auto upgrade nix package and the daemon service.
