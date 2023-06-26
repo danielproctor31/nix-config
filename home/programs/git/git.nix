@@ -13,10 +13,12 @@
       last = "log -1 HEAD";
       visual = "!gitk";
     };
+
     extraConfig = {
       init.defaultBranch = "main";
       core.editor = "vim";
     };
+    
     ignores = [
     ];
   };

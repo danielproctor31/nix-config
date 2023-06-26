@@ -1,14 +1,14 @@
 {
   description = "My NixOS Configuration";
+  
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # TODO darwin
-    # nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-23.05-darwin";
     darwin = {
       url = "github:lnl7/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -22,8 +22,17 @@
       # NixOS configuration
       nixosConfigurations."blade" = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        modules = [ ./hosts/blade/configuration.nix ];
+        modules = [ 
+          ./hosts/blade/configuration.nix
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.daniel = import ./home/linux.nix;
+          }
+        ];
       };
+
       # MacOS configuration
       darwinConfigurations."mac" = darwin.lib.darwinSystem {
         system = "aarch64-darwin";
@@ -33,29 +42,12 @@
       # home manager configs
       homeConfigurations."linux" = hm.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.x86_64-linux;
-
-        modules = [ 
-          ./home.nix 
-          {
-            home = {
-              username = "daniel";
-              homeDirectory = "/home/daniel";
-            };
-          }
-        ];
+        modules = [ ./home/linux.nix ];
       };
+
       homeConfigurations."mac" = hm.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.aarch64-darwin;
-
-        modules = [ 
-          ./home.nix 
-          {
-            home = {
-              username = "daniel";
-              homeDirectory = "/Users/daniel";
-            };
-          }
-        ];
+        modules = [ ./home/mac.nix ];
       };
     };
 }
