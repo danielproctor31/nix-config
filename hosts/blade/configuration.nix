@@ -96,7 +96,6 @@ in
       cryptomator
       plexamp
       darktable
-      openrgb
     ];
   };
 
@@ -116,7 +115,16 @@ in
     libreoffice
     flatpak
     nvidia-offload
+    openrgb
   ];
+
+  # udev packages
+  services.udev.packages = [ 
+    pkgs.openrgb 
+  ];
+  
+  # openrgb modules
+  boot.kernelModules = [ "i2c-dev" "i2c-i801" ];
 
   programs.zsh.enable = true;
   virtualisation.docker.enable = true;
