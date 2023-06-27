@@ -85,7 +85,7 @@ in
     isNormalUser = true;
     description = "Daniel";
     shell = pkgs.zsh;
-    extraGroups = [ "wheel" "networkmanager" "audio" "video" "input" "games" "kvm" "libvirt" "docker" ];
+    extraGroups = [ "wheel" "networkmanager" "audio" "video" "input" "games" "kvm" "libvirtd" "docker" ];
     packages = with pkgs; [
       # Add any extra packages you want installed for this user
       vscode
@@ -120,6 +120,7 @@ in
     flatpak
     nvidia-offload
     openrgb
+    virt-manager
   ];
 
   # udev packages
@@ -131,10 +132,13 @@ in
   boot.kernelModules = [ "i2c-dev" "i2c-i801" ];
 
   programs.zsh.enable = true;
+
   virtualisation ={
     docker.enable = true;
     podman.enable = true;
+    libvirtd.enable = true;
   };
+  programs.dconf.enable = true; # needed for virt-manager. https://nixos.wiki/wiki/virt-manager
   
   # Enable flakes
   nix = {
