@@ -98,6 +98,9 @@ in
       cryptomator
       plexamp
       darktable
+      openrgb
+      jetbrains-toolbox
+      dotnet-sdk
     ];
   };
 
@@ -111,7 +114,6 @@ in
     vim
     git
     wireguard-tools
-    podman
     distrobox
     firefox
     libreoffice
@@ -129,7 +131,10 @@ in
   boot.kernelModules = [ "i2c-dev" "i2c-i801" ];
 
   programs.zsh.enable = true;
-  virtualisation.docker.enable = true;
+  virtualisation ={
+    docker.enable = true;
+    podman.enable = true;
+  };
   
   # Enable flakes
   nix = {

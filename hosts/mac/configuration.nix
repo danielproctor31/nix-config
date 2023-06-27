@@ -18,7 +18,9 @@
     "homebrew/cask-fonts"
   ];
   brews = [
-  
+    "dotnet@6"
+    "nvm"
+    "pyenv"
   ];
   casks = [
     "font-caskaydia-cove-nerd-font"
@@ -30,6 +32,7 @@
     "plexamp"
     "darktable"
     "cryptomator"
+    "jetbrains-toolbox"
   ];
 };
   # Auto upgrade nix package and the daemon service.
