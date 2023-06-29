@@ -66,3 +66,4 @@ Links:
  - https://nixos.wiki/wiki/Full_Disk_Encryption
  - https://nix-community.github.io/home-manager/index.html
  - https://github.com/nix-community/nix-direnv
+ - https://nixos.wiki/wiki/Development_environment_with_nix-shell
