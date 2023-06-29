@@ -10,6 +10,7 @@
     pkgs.vim
     pkgs.nano
     pkgs.direnv
+    pkgs.nerdfonts
   ];
 
   imports = [
