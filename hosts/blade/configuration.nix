@@ -85,7 +85,7 @@ in
     isNormalUser = true;
     description = "Daniel";
     shell = pkgs.zsh;
-    extraGroups = [ "wheel" "networkmanager" "audio" "video" "input" "games" "kvm" "libvirtd" "docker" ];
+    extraGroups = [ "wheel" "networkmanager" "audio" "video" "input" "games" "kvm" "libvirtd" "docker" "plugdev" ];
     packages = with pkgs; [
       # Add any extra packages you want installed for this user
       vscode
@@ -120,17 +120,10 @@ in
     libreoffice
     flatpak
     nvidia-offload
-    openrgb
+    polychromatic
   ];
 
-  # udev packages
-  services.udev.packages = [ 
-    pkgs.openrgb 
-  ];
-  
-  # openrgb modules
-  boot.kernelModules = [ "i2c-dev" "i2c-i801" ];
-
+  hardware.openrazer.enable = true;
   programs.zsh.enable = true;
 
   virtualisation ={
