@@ -98,9 +98,10 @@ in
       cryptomator
       plexamp
       darktable
-      openrgb
       jetbrains-toolbox
       dotnet-sdk
+      virt-manager
+      krita
     ];
   };
 
@@ -120,7 +121,6 @@ in
     flatpak
     nvidia-offload
     openrgb
-    virt-manager
   ];
 
   # udev packages
