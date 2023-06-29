@@ -3,7 +3,9 @@
   programs.zsh = {
     enable = true;
     enableAutosuggestions = true;
-    enableSyntaxHighlighting = true;
+    SyntaxHighlighting = {
+      enable = true;
+    };
     
     initExtra = ''
       PATH=$HOME/.local/bin:$PATH
