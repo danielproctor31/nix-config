@@ -128,6 +128,7 @@ in
   ];
 
   hardware.openrazer.enable = true;
+  hardware.openrazer.users = ["daniel"];
   programs.zsh.enable = true;
 
   virtualisation ={
