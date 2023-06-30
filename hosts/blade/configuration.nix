@@ -127,6 +127,11 @@ in
     polychromatic
   ];
 
+  environment.sessionVariables = {
+    MOZ_USE_XINPUT2 = "1"; # enable touchscreen support in firefox
+  };
+
+
   hardware.openrazer.enable = true;
   hardware.openrazer.users = ["daniel"];
   programs.zsh.enable = true;
