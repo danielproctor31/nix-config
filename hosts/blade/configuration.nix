@@ -104,6 +104,8 @@ in
       krita
       calibre
       unityhub
+      audacity
+      obs-studio
     ];
   };
 
