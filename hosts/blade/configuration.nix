@@ -103,6 +103,7 @@ in
       virt-manager
       krita
       calibre
+      unityhub
     ];
   };
 
