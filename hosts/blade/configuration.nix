@@ -85,13 +85,14 @@ in
     isNormalUser = true;
     description = "Daniel";
     shell = pkgs.zsh;
-    extraGroups = [ "wheel" "networkmanager" "audio" "video" "input" "games" "kvm" "libvirtd" "docker" "plugdev" ];
+    extraGroups = [ "wheel" "networkmanager" "audio" "video" "input" "games" "kvm" "libvirtd" "docker" ];
     packages = with pkgs; [
       # Add any extra packages you want installed for this user
       vscode
       google-chrome
       lutris
       steam
+      mangohud
       protonup-qt
       heroic
       discord
