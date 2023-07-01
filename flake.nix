@@ -16,9 +16,7 @@
   };
   
   outputs = { self, nixpkgs, home-manager, darwin, ... }:
-      let
-          hm = home-manager.lib;
-      in {
+    {
       # NixOS configuration
       nixosConfigurations."blade" = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
@@ -39,16 +37,23 @@
         pkgs = nixpkgs.legacyPackages.aarch64-darwin;
         modules = [ 
           ./hosts/mac/configuration.nix
+          home-manager.darwinModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.daniel = import ./home/mac.nix;
+          }
         ];
       };
 
       # home manager config (For non NixOS use)
-      homeConfigurations."linux" = hm.homeManagerConfiguration {
+      homeConfigurations."linux" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.x86_64-linux;
         modules = [ ./home/linux.nix ];
       };
 
-      homeConfigurations."mac" = hm.homeManagerConfiguration {
+      # home manager config for mac
+      homeConfigurations."mac" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.aarch64-darwin;
         modules = [ ./home/mac.nix ];
       };

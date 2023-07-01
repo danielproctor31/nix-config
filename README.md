@@ -1,8 +1,5 @@
 # nix-config
 
-## TODO
-- [ ] Darwin - Home-Manager as a module
-
 ## Setup
 
 Enable Flakes:
