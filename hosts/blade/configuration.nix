@@ -29,6 +29,22 @@ in
   networking.networkmanager.enable = true;
   networking.hostName = "blade"; # Define your hostname.
 
+
+  # allow wireguard - https://nixos.wiki/wiki/WireGuard
+  networking.firewall = {
+   # if packets are still dropped, they will show up in dmesg
+   logReversePathDrops = true;
+   # wireguard trips rpfilter up
+   extraCommands = ''
+     ip46tables -t mangle -I nixos-fw-rpfilter -p udp -m udp --sport 51820 -j RETURN
+     ip46tables -t mangle -I nixos-fw-rpfilter -p udp -m udp --dport 51820 -j RETURN
+   '';
+   extraStopCommands = ''
+     ip46tables -t mangle -D nixos-fw-rpfilter -p udp -m udp --sport 51820 -j RETURN || true
+     ip46tables -t mangle -D nixos-fw-rpfilter -p udp -m udp --dport 51820 -j RETURN || true
+   '';
+  };
+
   # Set your time zone.
   time.timeZone = "Europe/London";
 
@@ -119,7 +135,7 @@ in
     zsh
     vim
     git
-    wireguard-tools
+    # wireguard-tools
     distrobox
     firefox
     libreoffice
