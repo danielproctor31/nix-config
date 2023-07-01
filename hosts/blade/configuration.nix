@@ -63,6 +63,16 @@ in
     LC_TIME = "en_GB.UTF-8";
   };
 
+  # fcitx - used for japanese input
+  i18n.inputMethod = {
+    enabled = "fcitx5";
+    fcitx5.addons = with pkgs; [
+        fcitx5-mozc
+        fcitx5-gtk
+        fcitx-qt
+    ];
+};
+
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
