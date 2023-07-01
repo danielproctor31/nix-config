@@ -135,7 +135,6 @@ in
     zsh
     vim
     git
-    # wireguard-tools
     distrobox
     firefox
     libreoffice
