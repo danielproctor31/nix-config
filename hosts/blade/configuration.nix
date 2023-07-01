@@ -69,7 +69,7 @@ in
     fcitx5.addons = with pkgs; [
         fcitx5-mozc
         fcitx5-gtk
-        fcitx-qt
+        fcitx5-qt
     ];
 };
 
