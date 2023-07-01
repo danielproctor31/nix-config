@@ -94,6 +94,9 @@ in
     pulse.enable = true;
   };
 
+  # enable flatpak
+  services.flatpak.enable = true;
+
   hardware.bluetooth.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
@@ -138,7 +141,6 @@ in
     distrobox
     firefox
     libreoffice
-    flatpak
     nvidia-offload
     polychromatic
   ];
@@ -148,8 +150,10 @@ in
   };
 
 
+  # openrazre
   hardware.openrazer.enable = true;
   hardware.openrazer.users = ["daniel"];
+
   programs.zsh.enable = true;
 
   virtualisation ={
