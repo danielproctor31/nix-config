@@ -1,5 +1,4 @@
 { config, lib, pkgs, ... }:
-
 let
     nvidia-offload = pkgs.writeShellScriptBin "nvidia-offload" ''
     export __NV_PRIME_RENDER_OFFLOAD=1
@@ -16,6 +15,8 @@ in
     ../../common/nvidia.nix
   ];
 
+  networking.hostName = "blade"; # Define your hostname.
+
   # Setup keyfile
   boot.initrd.secrets = {
     "/crypto_keyfile.bin" = null;
@@ -23,30 +24,31 @@ in
 
   # Enable swap on luks
   boot.initrd.luks.devices."luks-706ae0db-c6c4-45c5-86b1-886876219691".device = "/dev/disk/by-uuid/706ae0db-c6c4-45c5-86b1-886876219691";
-  boot.initrd.luks.devices."luks-706ae0db-c6c4-45c5-86b1-886876219691".keyFile = "/crypto_keyfile.bin";
-
-  networking.hostName = "blade"; # Define your hostname.
-
-  environment.sessionVariables = {
-    MOZ_USE_XINPUT2 = "1"; # enable touchscreen support in firefox
+  boot.initrd.luks.devices."luks-706ae0db-c6c4-45c5-86b1-886876219691".keyFile = "/crypto_keyfile.bin"; 
+  
+  environment = {
+    sessionVariables = {
+      MOZ_USE_XINPUT2 = "1"; # enable touchscreen support in firefox
+    };
+    systemPackages = with pkgs; [
+      polychromatic
+    ];
   };
 
-  environment.systemPackages = with pkgs; [
-    polychromatic
-  ];
-
-  # openrazer
-  hardware.openrazer.enable = true;
-  hardware.openrazer.users = ["daniel"];
-
-  # Nvidia prime
-  hardware.nvidia.prime = {
-    offload = {
-      enable = true;
-      enableOffloadCmd = true;
-    };
+  hardware = {
+    # openrazer
+    openrazer.enable = true;
+    openrazer.users = ["daniel"];
     
-    intelBusId = "PCI:0:2:0";
-    nvidiaBusId = "PCI:59:0:0";
+    # Nvidia prime
+    nvidia.prime = {
+      offload = {
+        enable = true;
+        enableOffloadCmd = true;
+      };
+      
+      intelBusId = "PCI:0:2:0";
+      nvidiaBusId = "PCI:59:0:0";
+    };
   };
 }

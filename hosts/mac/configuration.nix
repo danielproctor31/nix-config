@@ -1,15 +1,18 @@
 { config, pkgs, ... }:
-{
+{  
+  nix = {
+    package = pkgs.nix;
 
-  # nix store settings
-  nix.settings.auto-optimise-store = true;
+    # nix store optimisation
+    settings.auto-optimise-store = true;
 
-  nix.gc = {
-    automatic = true;
-    dates = "daily";
-    options = "--delete-older-than 7d";
+    nix.gc = {
+      automatic = true;
+      dates = "daily";
+      options = "--delete-older-than 7d";
+    };
   };
-  
+
   users.users.daniel.home = "/Users/daniel";
 
   # List packages installed in system profile. To search by name, run:
@@ -47,7 +50,6 @@
 };
   # Auto upgrade nix package and the daemon service.
   services.nix-daemon.enable = true;
-  nix.package = pkgs.nix;
 
   programs.zsh.enable = true;  # default shell
 
