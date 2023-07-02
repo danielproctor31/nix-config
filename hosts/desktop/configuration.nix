@@ -8,4 +8,6 @@
   ];
 
   networking.hostName = "desktop"; # Define your hostname.  
+
+  system.stateVersion = "23.05";
 }

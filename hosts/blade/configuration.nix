@@ -51,4 +51,6 @@ in
       nvidiaBusId = "PCI:59:0:0";
     };
   };
+
+  system.stateVersion = "23.05";
 }

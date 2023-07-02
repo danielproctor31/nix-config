@@ -135,13 +135,13 @@
     podman.enable = true;
     libvirtd.enable = true;
   };
-  
+
   # Enable networking
   networking = {
-    enable = true;
+    networkmanager.enable = true;
 
     # allow wireguard - https://nixos.wiki/wiki/WireGuard
-    networking.firewall = {
+    firewall = {
     # if packets are still dropped, they will show up in dmesg
     logReversePathDrops = true;
     # wireguard trips rpfilter up
@@ -155,6 +155,4 @@
     '';
     };
   };
-  
-  system.stateVersion = "23.05";
 }
