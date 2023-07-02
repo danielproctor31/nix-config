@@ -1,6 +1,11 @@
 { config, pkgs, ... }:
 {
-  home.stateVersion = "23.05";
+  imports = [
+    ./programs/git/git.nix
+    ./programs/zsh/zsh.nix
+  ];
+
+  programs.home-manager.enable = true;
 
   home.packages = [
     pkgs.zsh
@@ -13,10 +18,5 @@
     pkgs.nerdfonts
   ];
 
-  imports = [
-    ./programs/git/git.nix
-    ./programs/zsh/zsh.nix
-  ];
-
-  programs.home-manager.enable = true;
+  home.stateVersion = "23.05";
 }

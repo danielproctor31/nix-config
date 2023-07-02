@@ -1,6 +1,9 @@
 { config, pkgs, ... }:
-
 {
+  imports = [ 
+    ../../home.nix
+  ];
+
   users.users.daniel.home = "/Users/daniel";
 
   # List packages installed in system profile. To search by name, run:
