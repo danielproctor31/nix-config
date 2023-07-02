@@ -158,7 +158,7 @@ in
   };
 
 
-  # openrazre
+  # openrazer
   hardware.openrazer.enable = true;
   hardware.openrazer.users = ["daniel"];
 
