@@ -1,5 +1,15 @@
 { config, pkgs, ... }:
 {
+
+  # nix store settings
+  nix.settings.auto-optimise-store = true;
+
+  nix.gc = {
+    automatic = true;
+    dates = "daily";
+    options = "--delete-older-than 7d";
+  };
+  
   users.users.daniel.home = "/Users/daniel";
 
   # List packages installed in system profile. To search by name, run:
