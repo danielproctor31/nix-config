@@ -98,6 +98,7 @@
       google-chrome
       lutris
       steam
+      gamemode
       mangohud
       protonup-qt
       heroic
