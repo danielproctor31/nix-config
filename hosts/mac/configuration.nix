@@ -1,18 +1,13 @@
 { config, pkgs, ... }:
 {
-  imports = [ 
-    ../../home.nix
-  ];
-
   users.users.daniel.home = "/Users/daniel";
 
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
-  environment.systemPackages =
-    [ 
-      pkgs.vim
-      pkgs.git
-    ];
+  environment.systemPackages = [ 
+    pkgs.vim
+    pkgs.git
+  ];
 
   homebrew = {
   enable = true;

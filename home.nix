@@ -6,7 +6,7 @@
   ];
 
   programs.home-manager.enable = true;
-
+  
   home.packages = [
     pkgs.zsh
     pkgs.git

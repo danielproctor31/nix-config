@@ -11,13 +11,19 @@ let
 in
 {
   imports = [ 
-    /etc/nixos/hardware-configuration.nix 
+    ./hardware-configuration.nix 
     ../../common/default.nix
     ../../common/nvidia.nix
-    ../../common/wireguard.nix
-    ../../common/locale.nix
-    ../../home.nix
   ];
+
+  # Setup keyfile
+  boot.initrd.secrets = {
+    "/crypto_keyfile.bin" = null;
+  };
+
+  # Enable swap on luks
+  boot.initrd.luks.devices."luks-706ae0db-c6c4-45c5-86b1-886876219691".device = "/dev/disk/by-uuid/706ae0db-c6c4-45c5-86b1-886876219691";
+  boot.initrd.luks.devices."luks-706ae0db-c6c4-45c5-86b1-886876219691".keyFile = "/crypto_keyfile.bin";
 
   networking.hostName = "blade"; # Define your hostname.
 
@@ -45,6 +51,4 @@ in
       nvidiaBusId = "PCI:59:0:0";
     };
   };
-
-  system.stateVersion = "23.05";
 }
