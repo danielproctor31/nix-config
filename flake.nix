@@ -61,13 +61,13 @@
     # home manager config (For non NixOS use)
     homeConfigurations."linux" = home-manager.lib.homeManagerConfiguration {
       pkgs = nixpkgs.legacyPackages.x86_64-linux;
-      modules = [ ./home/linux.nix ];
+      modules = [ ./home.nix ];
     };
 
     # home manager config for dawrin
     homeConfigurations."darwin" = home-manager.lib.homeManagerConfiguration {
       pkgs = nixpkgs.legacyPackages.aarch64-darwin;
-      modules = [ ./home/darwin.nix ];
+      modules = [ ./home.nix ];
     };
   };
 }
