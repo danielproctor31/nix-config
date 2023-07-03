@@ -60,14 +60,30 @@
 
     # home manager config (For non NixOS use)
     homeConfigurations."linux" = home-manager.lib.homeManagerConfiguration {
-      pkgs = nixpkgs.legacyPackages.x86_64-linux;
-      modules = [ ./home.nix ];
+      pkgs = nixpkgs.legacyPackages.x86_64-linux;     
+      modules = [ 
+        ./home.nix 
+        {
+          home = {
+            username = "daniel";
+            homeDirectory = "/home/daniel";
+          };
+        }
+      ];
     };
 
     # home manager config for dawrin
     homeConfigurations."darwin" = home-manager.lib.homeManagerConfiguration {
       pkgs = nixpkgs.legacyPackages.aarch64-darwin;
-      modules = [ ./home.nix ];
+      modules = [ 
+        ./home.nix 
+        {
+          home = {
+            username = "daniel";
+            homeDirectory = "/Users/daniel";
+          };
+        }
+      ];
     };
   };
 }
