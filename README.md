@@ -10,8 +10,8 @@ echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
 
 Install Home Manager:
 ```
-sudo nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
-sudo nix-channel --update
+nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
+nix-channel --update
 ```
 
 ### Darwin
