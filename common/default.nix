@@ -83,6 +83,7 @@
   hardware = {
     pulseaudio.enable = false;
     bluetooth.enable = true;
+    steam-hardware.enable = true;
   };  
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
@@ -94,20 +95,10 @@
     packages = with pkgs; [
       # Add any extra packages you want installed for this user
       vscode
-      google-chrome
-      lutris
-      mangohud
-      protonup-qt
-      heroic
-      discord
       cryptomator
-      plexamp
-      darktable
       jetbrains-toolbox
       dotnet-sdk
       virt-manager
-      krita
-      calibre
       unityhub
     ];
   };
@@ -119,13 +110,9 @@
     vim
     git
     distrobox
-    firefox
-    libreoffice
   ];
 
   programs = {
-    steam.enable = true;
-    gamemode.enable = true;
     zsh.enable = true;
     dconf.enable = true; # needed for virt-manager. https://nixos.wiki/wiki/virt-manager
   };
