@@ -43,12 +43,12 @@
       ];
     };
 
-    # MacOS configuration
-    darwinConfigurations."mac" = darwin.lib.darwinSystem {
+    # Darwin configuration
+    darwinConfigurations."darwin" = darwin.lib.darwinSystem {
       system = "aarch64-darwin";
       pkgs = nixpkgs.legacyPackages.aarch64-darwin;
       modules = [ 
-        ./hosts/mac/configuration.nix
+        ./hosts/darwin/configuration.nix
         home-manager.darwinModules.home-manager
         {
           home-manager.useGlobalPkgs = true;
@@ -64,10 +64,10 @@
       modules = [ ./home/linux.nix ];
     };
 
-    # home manager config for mac
-    homeConfigurations."mac" = home-manager.lib.homeManagerConfiguration {
+    # home manager config for dawrin
+    homeConfigurations."darwin" = home-manager.lib.homeManagerConfiguration {
       pkgs = nixpkgs.legacyPackages.aarch64-darwin;
-      modules = [ ./home/mac.nix ];
+      modules = [ ./home/darwin.nix ];
     };
   };
 }
