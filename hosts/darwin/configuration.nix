@@ -5,12 +5,6 @@
 
     # nix store optimisation
     settings.auto-optimise-store = true;
-
-    nix.gc = {
-      automatic = true;
-      dates = "daily";
-      options = "--delete-older-than 7d";
-    };
   };
 
   users.users.daniel.home = "/Users/daniel";
