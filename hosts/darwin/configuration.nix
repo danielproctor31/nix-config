@@ -24,7 +24,7 @@
     "homebrew/cask-fonts"
   ];
   brews = [
-
+    "nvim"
   ];
   casks = [
     "font-caskaydia-cove-nerd-font"
