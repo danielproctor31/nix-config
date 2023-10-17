@@ -96,10 +96,6 @@
       # Add any extra packages you want installed for this user
       vscode
       cryptomator
-      jetbrains-toolbox
-      dotnet-sdk
-      virt-manager
-      unityhub
     ];
   };
 
@@ -107,7 +103,8 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     zsh
-    vim
+    nvim
+    nano
     git
     distrobox
   ];

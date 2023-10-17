@@ -12,7 +12,6 @@
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
   environment.systemPackages = [ 
-    pkgs.vim
     pkgs.git
   ];
 
@@ -25,9 +24,7 @@
     "homebrew/cask-fonts"
   ];
   brews = [
-    "dotnet@6"
-    "nvm"
-    "pyenv"
+
   ];
   casks = [
     "font-caskaydia-cove-nerd-font"
@@ -37,9 +34,9 @@
     "iterm2"
     "visual-studio-code"
     "plexamp"
-    "darktable"
     "cryptomator"
-    "jetbrains-toolbox"
+    "tailscale"
+    "krita"
   ];
 };
   # Auto upgrade nix package and the daemon service.
