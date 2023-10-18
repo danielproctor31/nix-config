@@ -40,7 +40,7 @@ sudo nixos-rebuild switch --flake ./#<host>
 
 ### Home Manager
 ```
-nix run home-manager/master -- switch --flake ./#<host>
+nix run home-manager/master -- switch --flake ./#linux
 ```
 
 ### direnv
