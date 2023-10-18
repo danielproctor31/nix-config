@@ -42,14 +42,14 @@
       LC_TELEPHONE = "en_GB.UTF-8";
       LC_TIME = "en_GB.UTF-8";
     };
-    # fcitx - used for japanese input
-    inputMethod = {
-      enabled = "fcitx5";
-      fcitx5.addons = with pkgs; [
-        fcitx5-mozc
-        fcitx5-gtk
-      ];
-    };
+    # fcitx - used for japanese input (KDE)
+    # inputMethod = {
+    #   enabled = "fcitx5";
+    #   fcitx5.addons = with pkgs; [
+    #     fcitx5-mozc
+    #     fcitx5-gtk
+    #   ];
+    # };
   };
 
   sound.enable = true;
@@ -58,9 +58,14 @@
   services = {
     # Enable the X11 windowing system.
     xserver.enable = true;
+
+    # Enable the Gnome Desktop Environment.
+    services.xserver.displayManager.gdm.enable = true;
+    services.xserver.desktopManager.gnome.enable = true;
+    
     # Enable the KDE Plasma Desktop Environment.
-    xserver.displayManager.sddm.enable = true;
-    xserver.desktopManager.plasma5.enable = true;
+    # xserver.displayManager.sddm.enable = true;
+    # xserver.desktopManager.plasma5.enable = true;
 
     # Configure keymap in X11
     xserver = {
@@ -96,6 +101,8 @@
       # Add any extra packages you want installed for this user
       vscode
       cryptomator
+      virt-manager
+      ibus-mozc # japanese input (gnome)
     ];
   };
 
@@ -107,7 +114,12 @@
     nano
     git
     distrobox
+    gnomeExtensions.appindicator
+    gnome.adwaita-icon-theme
   ];
+
+  # Required for appindicator
+  services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
 
   programs = {
     zsh.enable = true;

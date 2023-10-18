@@ -24,8 +24,8 @@
         ./hosts/desktop/configuration.nix
         home-manager.nixosModules.home-manager
         {
-          useGlobalPkgs = true;
-          useUserPackages = true;
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
           home-manager.users.daniel = import ./home.nix;
         }
       ];
@@ -67,20 +67,6 @@
           home = {
             username = "daniel";
             homeDirectory = "/home/daniel";
-          };
-        }
-      ];
-    };
-
-    # home manager config for dawrin
-    homeConfigurations."darwin" = home-manager.lib.homeManagerConfiguration {
-      pkgs = nixpkgs.legacyPackages.aarch64-darwin;
-      modules = [ 
-        ./home.nix 
-        {
-          home = {
-            username = "daniel";
-            homeDirectory = "/Users/daniel";
           };
         }
       ];
