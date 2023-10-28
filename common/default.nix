@@ -56,21 +56,20 @@
   security.rtkit.enable = true;
 
   services = {
-    # Enable the X11 windowing system.
-    xserver.enable = true;
-
-    # Enable the Gnome Desktop Environment.
-    services.xserver.displayManager.gdm.enable = true;
-    services.xserver.desktopManager.gnome.enable = true;
-    
-    # Enable the KDE Plasma Desktop Environment.
-    # xserver.displayManager.sddm.enable = true;
-    # xserver.desktopManager.plasma5.enable = true;
-
-    # Configure keymap in X11
     xserver = {
+      enable = true;
+
+      # Configure keymap in X11
       layout = "gb";
       xkbVariant = "";
+
+      # Enable the Gnome Desktop Environment.
+      displayManager.gdm.enable = true;
+      desktopManager.gnome.enable = true;
+
+      # Enable the KDE Plasma Desktop Environment.
+      # displayManager.sddm.enable = true;
+      # desktopManager.plasma5.enable = true;
     };
    
    # Enable sound with pipewire.
