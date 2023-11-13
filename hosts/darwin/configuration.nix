@@ -25,6 +25,7 @@
   ];
   brews = [
     "nvim"
+    "firefoxpwa"
   ];
   casks = [
     "font-caskaydia-cove-nerd-font"
