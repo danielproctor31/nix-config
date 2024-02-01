@@ -25,7 +25,7 @@
   ];
   brews = [
     "nvim"
-    "firefoxpwa"
+    "android-platform-tools"
   ];
   casks = [
     "font-caskaydia-cove-nerd-font"
@@ -38,6 +38,10 @@
     "cryptomator"
     "tailscale"
     "krita"
+    "devtoys"
+    "syncthing"
+    "anki"
+    "cyberduck"
   ];
 };
   # Auto upgrade nix package and the daemon service.
