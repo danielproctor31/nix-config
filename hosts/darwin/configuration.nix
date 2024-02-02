@@ -45,6 +45,8 @@
     "heynote"
     "obsidian"
     "darktable"
+    "audacity"
+    "godot"
   ];
 };
   # Auto upgrade nix package and the daemon service.
