@@ -42,6 +42,9 @@
     "syncthing"
     "anki"
     "cyberduck"
+    "heynote"
+    "obsidian"
+    "darktable"
   ];
 };
   # Auto upgrade nix package and the daemon service.
