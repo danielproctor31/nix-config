@@ -13,6 +13,7 @@
   # $ nix-env -qaP | grep wget
   environment.systemPackages = [ 
     pkgs.git
+    pkgs.dotnet-sdk_8
   ];
 
   homebrew = {
@@ -25,10 +26,10 @@
   ];
   brews = [
     "nvim"
-    "android-platform-tools"
   ];
   casks = [
     "font-caskaydia-cove-nerd-font"
+    "android-platform-tools"
     "docker"
     "firefox"
     "google-chrome"

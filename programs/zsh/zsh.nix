@@ -6,7 +6,6 @@
     enableSyntaxHighlighting = true;
     
     initExtra = ''
-      PATH=$HOME/.local/bin:$PATH
       eval "$(direnv hook zsh)"
     '';
 
