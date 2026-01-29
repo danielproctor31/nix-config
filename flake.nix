@@ -61,12 +61,13 @@
           statix # Nix linter
           nix-tree # Visualize dependency tree
           nvd # Nix version diff tool
+          nix-diff # Compare derivations
           deadnix # Find and remove dead code
         ];
         
         shellHook = ''
           echo "NixOS Configuration Development Environment"
-          echo "Available tools: nixpkgs-fmt, nil, statix, nix-tree, nvd, deadnix"
+          echo "Available tools: nixpkgs-fmt, nil, statix, nix-tree, nvd, nix-diff, deadnix"
         '';
       };
     });

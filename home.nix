@@ -5,6 +5,7 @@
   imports = [
     ./programs/git/git.nix
     ./programs/zsh/zsh.nix
+    ./programs/ssh/ssh.nix
   ];
 
   # Home Manager needs a bit of information about you and the paths it should manage
@@ -31,6 +32,48 @@
   programs.fzf = {
     enable = true;
     enableZshIntegration = true;
+  };
+  
+  # System monitoring with btop
+  programs.btop = {
+    enable = true;
+    settings = {
+      color_theme = "Default";
+      theme_background = false;
+      truecolor = true;
+      vim_keys = true;
+      rounded_corners = true;
+      update_ms = 1000;
+    };
+  };
+  
+  # Terminal multiplexer
+  programs.tmux = {
+    enable = true;
+    clock24 = true;
+    keyMode = "vi";
+    mouse = true;
+    terminal = "screen-256color";
+    extraConfig = ''
+      # Start windows and panes at 1, not 0
+      set -g base-index 1
+      setw -g pane-base-index 1
+      
+      # Better split commands
+      bind | split-window -h
+      bind - split-window -v
+    '';
+  };
+  
+  # Example: Manage dotfiles with home.file
+  home.file = {
+    # Example configuration file
+    # ".config/some-app/config.toml".text = ''
+    #   # Configuration contents
+    # '';
+    
+    # Keep directory structure
+    ".local/share/applications/.keep".text = "";
   };
   
   home.packages = with pkgs; [
@@ -61,6 +104,10 @@
   ];
 
   # WARNING: Do not change this value after initial installation!
+  # This can be independent from system.stateVersion
   # https://nix-community.github.io/home-manager/index.xhtml#sec-usage-configuration
-  home.stateVersion = stateVersion;
+  home.stateVersion = "24.11";
+  
+  # Disable command-not-found since we use nix-index
+  programs.command-not-found.enable = false;
 }

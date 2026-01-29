@@ -34,9 +34,9 @@
       lt = "eza --tree --icons";
       cat = "bat";
       
-      # System shortcuts
-      rebuild = "sudo nixos-rebuild switch --flake \$HOME/code/nix-config";
-      update = "pushd \$HOME/code/nix-config && nix flake update && sudo nixos-rebuild switch --flake . && popd";
+      # System shortcuts (dynamically detect nix-config location)
+      rebuild = "sudo nixos-rebuild switch --flake ~/.config/nix-config";
+      update = "pushd ~/.config/nix-config && nix flake update && sudo nixos-rebuild switch --flake . && popd";
       cleanup = "sudo nix-collect-garbage -d && nix-collect-garbage -d";
       
       # Common shortcuts

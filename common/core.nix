@@ -2,6 +2,10 @@
 # Platform-agnostic settings for Nix itself, users, and essential packages
 { config, lib, pkgs, nixpkgs, username, ... }:
 {
+  imports = [
+    ../overlays/default.nix
+  ];
+  
   nix = {
     settings = {
       # Enable flakes and new nix command

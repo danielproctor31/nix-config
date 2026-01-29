@@ -56,6 +56,82 @@ Subsequent rebuilds (using ZSH alias from config):
 rebuild  # Alias for: sudo nixos-rebuild switch --flake ~/.config/nix-config
 ```
 
+## Update Strategy
+
+### Safe Update Process
+
+1. **Review changes before updating:**
+   ```bash
+   cd ~/.config/nix-config
+   nix flake lock --update-input nixpkgs --dry-run
+   ```
+
+2. **Update and test:**
+   ```bash
+   # Update flake inputs
+   nix flake update
+   
+   # Test without making permanent (reverts on reboot)
+   sudo nixos-rebuild test --flake ~/.config/nix-config
+   
+   # If stable, apply permanently
+   rebuild
+   ```
+
+3. **Keep a safe generation:**
+   Don't delete all old generations immediately. Keep at least 2-3 previous working generations:
+   ```bash
+   # Delete generations older than 30 days (keeps recent ones)
+   sudo nix-collect-garbage --delete-older-than 30d
+   ```
+
+### Selective Updates
+
+Update specific inputs without touching others:
+```bash
+# Update only nixpkgs
+nix flake lock --update-input nixpkgs
+
+# Update only home-manager
+nix flake lock --update-input home-manager
+
+# Then rebuild
+rebuild
+```
+
+## Rollback Procedures
+
+### Quick Rollback
+
+If something breaks after an update:
+
+1. **Reboot and select previous generation** from the boot menu
+2. Or rollback immediately:
+   ```bash
+   sudo nixos-rebuild switch --rollback
+   ```
+
+### Manual Generation Selection
+
+```bash
+# List all system generations
+sudo nix-env -p /nix/var/nix/profiles/system --list-generations
+
+# Switch to specific generation (e.g., 42)
+sudo nix-env -p /nix/var/nix/profiles/system --switch-generation 42
+sudo /nix/var/nix/profiles/system/bin/switch-to-configuration switch
+```
+
+### Home Manager Rollback
+
+```bash
+# List home-manager generations
+home-manager generations
+
+# Activate specific generation
+/nix/store/xxx-home-manager-generation/activate
+```
+
 ### Testing Changes Before Applying
 
 Test your configuration without committing to it:
@@ -95,7 +171,7 @@ Always commit `flake.lock` changes to maintain build reproducibility across syst
 nix develop
 ```
 
-Provides: nixpkgs-fmt, nil (Nix LSP), statix (linter), nix-tree, nvd, deadnix
+Provides: nixpkgs-fmt, nil (Nix LSP), statix (linter), nix-tree, nvd, nix-diff, deadnix
 
 ### Format Code
 
@@ -118,13 +194,18 @@ update  # Runs flake update and rebuilds system
 ├── home.nix               # Home-manager user configuration
 ├── common/
 │   ├── core.nix          # Platform-agnostic Nix settings
-│   └── linux.nix         # Linux-specific settings (KDE Plasma, AMD GPU, sound, networking)
+│   └── linux.nix         # Linux-specific settings (KDE Plasma, sound, networking)
+├── hardware/
+│   └── amd-gpu.nix       # AMD GPU hardware acceleration
 ├── hosts/
 │   └── desktop/          # Desktop workstation configuration
 │       ├── configuration.nix
 │       └── hardware-configuration.nix
+├── overlays/
+│   └── default.nix       # Custom package overlays
 └── programs/
     ├── git/              # Git configuration and aliases
+    ├── ssh/              # SSH client configuration
     └── zsh/              # ZSH with Oh-My-Zsh and modern CLI tools
 ```
 
@@ -132,12 +213,14 @@ update  # Runs flake update and rebuilds system
 
 ### Desktop Environment
 - KDE Plasma 6 with Wayland
-- SDDM display manager
+- SDDM display manager with Wayland support
 - PipeWire audio
+- Plymouth graphical boot
 
 ### Graphics
-- AMD GPU with AMDGPU kernel driver
+- AMD GPU with AMDGPU kernel driver (modular configuration)
 - Mesa drivers with VA-API and VDPAU hardware acceleration
+- Vulkan support with AMDVLK
 - 32-bit support for gaming
 
 ### Virtualization & Containers
@@ -147,9 +230,12 @@ update  # Runs flake update and rebuilds system
 
 ### Development Tools
 - Nix development shell with formatters and linters
-- direnv for automatic environment loading
+- direnv with nix-direnv for automatic environment loading
+- nix-index for command-not-found functionality
 - Modern CLI replacements (eza, bat, ripgrep, fd, fzf)
 - Git with delta diff viewer
+- btop for system monitoring
+- tmux for terminal multiplexing
 
 ## Useful Commands
 
@@ -227,6 +313,45 @@ To add a new host (e.g., a laptop):
 ```bash
 # Generate hardware configuration for current system
 sudo nixos-generate-config --show-hardware-config > hosts/$(hostname)/hardware-configuration.nix
+```
+
+### System Won't Boot After Update
+
+1. **Select previous generation** from GRUB/systemd-boot menu
+2. Once booted, rollback:
+   ```bash
+   sudo nixos-rebuild switch --rollback
+   ```
+3. Review what changed:
+   ```bash
+   nvd diff /run/current-system /nix/var/nix/profiles/system-*-link
+   ```
+
+### Home Manager Activation Fails
+
+```bash
+# Check what failed
+home-manager build
+
+# Try with verbose output
+home-manager switch -v
+
+# Last resort: rollback home-manager
+home-manager generations
+# Copy the path and run: /nix/store/xxx-home-manager-generation/activate
+```
+
+### Service Fails to Start
+
+```bash
+# Check service status
+systemctl status servicename
+
+# View logs
+journalctl -u servicename -f
+
+# Check service configuration
+systemctl cat servicename
 ```
 
 ### Check What Changed Between Generations

@@ -11,6 +11,7 @@
 
   # Boot optimization
   boot.kernelParams = [ "quiet" "splash" ];
+  boot.plymouth.enable = true;
 
   # Configure console keymap
   console.keyMap = "uk";
@@ -45,32 +46,10 @@
     flatpak.enable = true;
   };
 
-  # AMD GPU kernel driver
-  boot.initrd.kernelModules = [ "amdgpu" ];
-
   hardware = {
-    pulseaudio.enable = false;
+    pulseaudio.enable = lib.mkForce false;
     bluetooth.enable = true;
     steam-hardware.enable = true;
-    
-    # AMD GPU configuration with hardware acceleration
-    graphics = {
-      enable = true;
-      enable32Bit = true;
-      extraPackages = with pkgs; [
-        # VA-API and VDPAU for hardware video acceleration
-        mesa.drivers
-        vaapiVdpau
-        libvdpau-va-gl
-        # Vulkan drivers
-        amdvlk
-        vulkan-validation-layers
-      ];
-      extraPackages32 = with pkgs.driversi686Linux; [
-        mesa.drivers
-        amdvlk
-      ];
-    };
   };  
 
   # Linux-specific system packages
@@ -102,7 +81,10 @@
 
   # Enable networking
   networking = {
-    networkmanager.enable = true;
+    networkmanager = {
+      enable = true;
+      wifi.powersave = false;  # Disable WiFi power saving for better performance
+    };
 
     # Configure firewall
     firewall = {

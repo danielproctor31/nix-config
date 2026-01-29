@@ -6,6 +6,7 @@
   imports = [
     ../../common/core.nix
     ../../common/linux.nix
+    ../../hardware/amd-gpu.nix
   ] ++ lib.optional (builtins.pathExists ./hardware-configuration.nix) ./hardware-configuration.nix;
 
   networking.hostName = "desktop"; # Define your hostname.
