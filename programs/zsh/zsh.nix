@@ -4,8 +4,14 @@
 {
   programs.zsh = {
     enable = true;
+    enableCompletion = true;
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
+
+    history = {
+      size = 10000;
+      path = "${config.xdg.dataHome}/zsh/history";
+    };
 
     oh-my-zsh = {
       enable = true;
@@ -29,8 +35,8 @@
       cat = "bat";
       
       # System shortcuts
-      rebuild = "sudo nixos-rebuild switch --flake ~/.config/nix-config";
-      update = "cd ~/.config/nix-config && nix flake update && sudo nixos-rebuild switch --flake .";
+      rebuild = "sudo nixos-rebuild switch --flake \$HOME/code/nix-config";
+      update = "pushd \$HOME/code/nix-config && nix flake update && sudo nixos-rebuild switch --flake . && popd";
       cleanup = "sudo nix-collect-garbage -d && nix-collect-garbage -d";
       
       # Common shortcuts
@@ -45,10 +51,8 @@
     };
     
     initExtra = ''
-      # Use fzf for better history search
-      if [ -n "''${commands[fzf]}" ]; then
-        source <(fzf --zsh)
-      fi
+      # Additional zsh configuration
+      # fzf integration is handled by programs.fzf.enableZshIntegration
     '';
   };
 }

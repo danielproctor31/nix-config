@@ -2,6 +2,8 @@
 # Version control settings, aliases, and user information
 { config, pkgs, ... }:
 {
+  # Ensure delta is available for git diff
+  home.packages = [ pkgs.delta ];
   programs.git = {
     enable = true;
     userName = "Daniel Proctor";
@@ -84,6 +86,7 @@
       # Environment
       ".env"
       ".env.local"
+      ".direnv/"
     ];
   };
 }

@@ -56,6 +56,20 @@ Subsequent rebuilds (using ZSH alias from config):
 rebuild  # Alias for: sudo nixos-rebuild switch --flake ~/.config/nix-config
 ```
 
+### Testing Changes Before Applying
+
+Test your configuration without committing to it:
+```bash
+# Test the configuration (doesn't persist after reboot)
+sudo nixos-rebuild test --flake ~/.config/nix-config
+
+# Boot into the new config once, then revert (safe testing)
+sudo nixos-rebuild boot --flake ~/.config/nix-config
+
+# If satisfied, make it permanent
+rebuild
+```
+
 ### Flake Lock Integrity
 
 **Important:** The `flake.lock` file is committed to ensure reproducible builds. After updating:
@@ -151,6 +165,113 @@ cleanup  # Run garbage collection
 Setup automatic environment loading in projects:
 ```bash
 echo "use nix" > .envrc && direnv allow .
+```
+
+## Adding New Hosts
+
+To add a new host (e.g., a laptop):
+
+1. **Create host directory:**
+   ```bash
+   mkdir -p hosts/laptop
+   ```
+
+2. **Generate hardware configuration:**
+   ```bash
+   sudo nixos-generate-config --show-hardware-config > hosts/laptop/hardware-configuration.nix
+   ```
+
+3. **Create configuration.nix:**
+   ```bash
+   cat > hosts/laptop/configuration.nix << 'EOF'
+   { config, lib, pkgs, ... }:
+   {
+     imports = [
+       ../../common/core.nix
+       ../../common/linux.nix
+     ] ++ lib.optional (builtins.pathExists ./hardware-configuration.nix) ./hardware-configuration.nix;
+
+     networking.hostName = "laptop";
+     system.stateVersion = "24.11";
+     
+     # Host-specific configuration here
+   }
+   EOF
+   ```
+
+4. **Add to flake.nix:**
+   ```nix
+   nixosConfigurations = {
+     desktop = ...;
+     
+     laptop = nixpkgs.lib.nixosSystem {
+       system = "x86_64-linux";
+       inherit specialArgs;
+       modules = [
+         ./hosts/laptop/configuration.nix
+         home-manager.nixosModules.home-manager
+         (mkHomeManagerConfig (import ./home.nix))
+       ];
+     };
+   };
+   ```
+
+5. **Build and switch:**
+   ```bash
+   sudo nixos-rebuild switch --flake .#laptop
+   ```
+
+## Troubleshooting
+
+### Build Fails Due to Missing Hardware Config
+```bash
+# Generate hardware configuration for current system
+sudo nixos-generate-config --show-hardware-config > hosts/$(hostname)/hardware-configuration.nix
+```
+
+### Check What Changed Between Generations
+```bash
+# Compare current and previous generations
+nvd diff /run/current-system /run/booted-system
+
+# List all generations
+sudo nix-env -p /nix/var/nix/profiles/system --list-generations
+```
+
+### Rollback to Previous Generation
+```bash
+# List generations
+sudo nix-env -p /nix/var/nix/profiles/system --list-generations
+
+# Rollback to previous
+sudo nixos-rebuild switch --rollback
+
+# Or boot into specific generation (shows in boot menu)
+```
+
+### Disk Space Issues
+```bash
+# Clean up old generations and garbage collect
+sudo nix-collect-garbage -d
+nix-collect-garbage -d
+
+# Check store usage
+nix path-info --closure-size -h /run/current-system
+
+# See what's taking up space
+nix-tree /run/current-system
+```
+
+### Flake Update Issues
+```bash
+# Update specific input only
+nix flake lock --update-input nixpkgs
+
+# Check flake metadata
+nix flake metadata
+
+# Show what would be updated
+nix flake lock --update-input nixpkgs --dry-run
 ```
 
 ## Resources

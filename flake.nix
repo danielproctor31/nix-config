@@ -8,22 +8,30 @@
       url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    pre-commit-hooks = {
+      url = "github:cachix/pre-commit-hooks.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   
-  outputs = { self, nixpkgs, home-manager, ... }:
+  outputs = { self, nixpkgs, home-manager, pre-commit-hooks, ... }:
   let
     # Shared username across all systems
     username = "daniel";
 
-    # Special args to pass to all modules
-    specialArgs = { inherit username; };
+    # State version - change only when explicitly upgrading
+    stateVersion = "24.11";
 
-    # Helper function for home-manager configuration
-    mkHomeManagerConfig = {
+    # Special args to pass to all modules
+    specialArgs = { inherit username stateVersion; };
+
+    # Helper function for home-manager configuration with optional per-host overrides
+    mkHomeManagerConfig = homeConfig: {
       home-manager.useGlobalPkgs = true;
       home-manager.useUserPackages = true;
       home-manager.extraSpecialArgs = specialArgs;
-      home-manager.users.${username} = import ./home.nix;
+      home-manager.users.${username} = homeConfig;
     };
 
     # System configurations
@@ -35,11 +43,11 @@
     nixosConfigurations = {
       desktop = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        inherit specialArgs;
+        specialArgs = specialArgs // { inherit nixpkgs; };
         modules = [ 
           ./hosts/desktop/configuration.nix
           home-manager.nixosModules.home-manager
-          mkHomeManagerConfig
+          (mkHomeManagerConfig (import ./home.nix))
         ];
       };
     };
@@ -67,6 +75,18 @@
     formatter = forAllSystems (system: 
       nixpkgs.legacyPackages.${system}.nixpkgs-fmt
     );
+
+    # Pre-commit hooks for code quality
+    checks = forAllSystems (system: {
+      pre-commit-check = pre-commit-hooks.lib.${system}.run {
+        src = ./.;
+        hooks = {
+          nixpkgs-fmt.enable = true;
+          statix.enable = true;
+          deadnix.enable = true;
+        };
+      };
+    });
 
   };
 }

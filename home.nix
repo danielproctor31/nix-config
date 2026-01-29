@@ -1,6 +1,6 @@
 # Home Manager configuration
 # User-level packages, programs, and dotfiles management
-{ config, pkgs, lib, username, ... }:
+{ config, pkgs, lib, username, stateVersion, ... }:
 {
   imports = [
     ./programs/git/git.nix
@@ -26,10 +26,16 @@
     enable = true;
     enableZshIntegration = true;
   };
+
+  # Enable fzf for fuzzy finding
+  programs.fzf = {
+    enable = true;
+    enableZshIntegration = true;
+  };
   
   home.packages = with pkgs; [
     # Fonts
-    nerd-fonts.caskaydia-cove
+    (nerdfonts.override { fonts = [ "CascadiaCode" ]; })
 
     # Modern CLI replacements and essential tools
     btop              # Modern resource monitor (better than htop)
@@ -56,5 +62,5 @@
 
   # WARNING: Do not change this value after initial installation!
   # https://nix-community.github.io/home-manager/index.xhtml#sec-usage-configuration
-  home.stateVersion = "24.11";
+  home.stateVersion = stateVersion;
 }

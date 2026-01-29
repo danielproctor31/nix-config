@@ -6,7 +6,11 @@
   boot.loader = {
     systemd-boot.enable = true;
     efi.canTouchEfiVariables = true;
+    timeout = 3;  # Faster boot
   };
+
+  # Boot optimization
+  boot.kernelParams = [ "quiet" "splash" ];
 
   # Configure console keymap
   console.keyMap = "uk";
@@ -95,12 +99,6 @@
   ];
 
   programs.dconf.enable = true;
-
-  # Virtualization
-  virtualisation = {
-    docker.enable = true;
-    libvirtd.enable = true;
-  };
 
   # Enable networking
   networking = {
