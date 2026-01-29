@@ -16,23 +16,62 @@ echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
 
 ## Installation
 
-### NixOS
+### Fresh NixOS Installation
 
-Clone this repository:
-```bash
-git clone <your-repo-url> ~/.config/nix-config
-cd ~/.config/nix-config
-```
+1. **Install NixOS** using the official installer with a minimal configuration
 
-Initial build:
-```bash
-sudo nixos-rebuild switch --flake .
-```
+2. **Generate hardware configuration:**
+   ```bash
+   sudo nixos-generate-config --root /mnt
+   ```
+
+3. **Clone this repository:**
+   ```bash
+   git clone <your-repo-url> ~/.config/nix-config
+   cd ~/.config/nix-config
+   ```
+
+4. **Copy hardware configuration:**
+   ```bash
+   # Copy the generated hardware-configuration.nix to your host directory
+   sudo cp /etc/nixos/hardware-configuration.nix hosts/desktop/
+   ```
+
+5. **Initial build:**
+   ```bash
+   sudo nixos-rebuild switch --flake .#desktop
+   ```
+
+6. **Set user password:**
+   ```bash
+   sudo passwd daniel
+   ```
+
+7. **Reboot** into your new system
+
+### Updating Existing System
 
 Subsequent rebuilds (using ZSH alias from config):
 ```bash
 rebuild  # Alias for: sudo nixos-rebuild switch --flake ~/.config/nix-config
 ```
+
+### Flake Lock Integrity
+
+**Important:** The `flake.lock` file is committed to ensure reproducible builds. After updating:
+
+```bash
+# Update all inputs
+nix flake update
+
+# Or update specific input
+nix flake lock --update-input nixpkgs
+
+# Verify lock file is valid
+nix flake metadata
+```
+
+Always commit `flake.lock` changes to maintain build reproducibility across systems.
 
 ## Development
 

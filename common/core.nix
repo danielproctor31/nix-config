@@ -16,7 +16,6 @@
       cores = lib.mkDefault 0;  # Use all available cores per build
       
       # Evaluation performance
-      eval-cache = true;
       warn-dirty = false;
       
       # Security
@@ -34,7 +33,7 @@
   };
 
   # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.allowUnfree = lib.mkDefault true;
 
   # Set your time zone
   time.timeZone = "Europe/London";

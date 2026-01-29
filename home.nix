@@ -54,5 +54,7 @@
     vscode
   ];
 
+  # WARNING: Do not change this value after initial installation!
+  # https://nix-community.github.io/home-manager/index.xhtml#sec-usage-configuration
   home.stateVersion = "24.11";
 }
