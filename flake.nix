@@ -2,74 +2,71 @@
   description = "My NixOS Configuration";
   
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-23.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-23.05";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    darwin = {
-      url = "github:lnl7/nix-darwin";
+      url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
   
-  outputs = { self, nixpkgs, home-manager, darwin, ... }:
+  outputs = { self, nixpkgs, home-manager, ... }:
+  let
+    # Shared username across all systems
+    username = "daniel";
+
+    # Special args to pass to all modules
+    specialArgs = { inherit username; };
+
+    # Helper function for home-manager configuration
+    mkHomeManagerConfig = {
+      home-manager.useGlobalPkgs = true;
+      home-manager.useUserPackages = true;
+      home-manager.extraSpecialArgs = specialArgs;
+      home-manager.users.${username} = import ./home.nix;
+    };
+
+    # System configurations
+    systems = [ "x86_64-linux" ];
+    forAllSystems = nixpkgs.lib.genAttrs systems;
+  in
   {
-    # NixOS configuration
-    nixosConfigurations."desktop" = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      modules = [ 
-        ./hosts/desktop/configuration.nix
-        home-manager.nixosModules.home-manager
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.users.daniel = import ./home.nix;
-        }
-      ];
-    };
-    nixosConfigurations."blade" = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      modules = [ 
-        ./hosts/blade/configuration.nix
-        home-manager.nixosModules.home-manager
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.users.daniel = import ./home.nix;
-        }
-      ];
+    # NixOS configurations
+    nixosConfigurations = {
+      desktop = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        inherit specialArgs;
+        modules = [ 
+          ./hosts/desktop/configuration.nix
+          home-manager.nixosModules.home-manager
+          mkHomeManagerConfig
+        ];
+      };
     };
 
-    # Darwin configuration
-    darwinConfigurations."darwin" = darwin.lib.darwinSystem {
-      system = "aarch64-darwin";
-      pkgs = nixpkgs.legacyPackages.aarch64-darwin;
-      modules = [ 
-        ./hosts/darwin/configuration.nix
-        home-manager.darwinModules.home-manager
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.users.daniel = import ./home.nix;
-        }
-      ];
-    };
+    # Development shells
+    devShells = forAllSystems (system: {
+      default = nixpkgs.legacyPackages.${system}.mkShell {
+        buildInputs = with nixpkgs.legacyPackages.${system}; [
+          nixpkgs-fmt
+          nil # Nix LSP
+          statix # Nix linter
+          nix-tree # Visualize dependency tree
+          nvd # Nix version diff tool
+          deadnix # Find and remove dead code
+        ];
+        
+        shellHook = ''
+          echo "NixOS Configuration Development Environment"
+          echo "Available tools: nixpkgs-fmt, nil, statix, nix-tree, nvd, deadnix"
+        '';
+      };
+    });
 
-    # home manager config (For non NixOS use)
-    homeConfigurations."linux" = home-manager.lib.homeManagerConfiguration {
-      pkgs = nixpkgs.legacyPackages.x86_64-linux;     
-      modules = [ 
-        ./home.nix 
-        {
-          home = {
-            username = "daniel";
-            homeDirectory = "/home/daniel";
-          };
-        }
-      ];
-    };
+    # Formatters for `nix fmt`
+    formatter = forAllSystems (system: 
+      nixpkgs.legacyPackages.${system}.nixpkgs-fmt
+    );
+
   };
 }

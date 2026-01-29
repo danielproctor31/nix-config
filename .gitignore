@@ -1,1 +1,7 @@
+# Build results
 result
+
+# Direnv
+.direnv
+
+# Keep flake.lock for reproducibility - it should be committed

@@ -1,13 +1,15 @@
+# Desktop workstation configuration
+# High-performance AMD GPU workstation with KDE Plasma
 { config, lib, pkgs, ... }:
 
 {
   imports = [ 
     ./hardware-configuration.nix
-    ../../common/default.nix
-    ../../common/nvidia.nix
+    ../../common/core.nix
+    ../../common/linux.nix
   ];
 
   networking.hostName = "desktop"; # Define your hostname.  
 
-  system.stateVersion = "23.05";
+  system.stateVersion = "24.11";
 }
